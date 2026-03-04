@@ -12,6 +12,7 @@ import {
 import { FaWindows } from "react-icons/fa";
 import { SiGoogle } from "react-icons/si";
 import { useNavigate } from "react-router-dom";
+import { useAdminLoginMutation } from "../Api/authapi";
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -21,7 +22,7 @@ const AdminLogin = () => {
   const [loginSuccess, setLoginSuccess] = useState(false);
 
   const navigate = useNavigate();
-
+const [adminLogin, { isLoading: apiLoading }] = useAdminLoginMutation();
   const validateForm = () => {
     const newErrors = {};
 
@@ -37,28 +38,32 @@ const AdminLogin = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setErrors({});
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setErrors({});
 
-    if (!validateForm()) return;
+  if (!validateForm()) return;
 
-    // Fake loading
-    setIsLoading(true);
+  try {
+    const res = await adminLogin(formData).unwrap();
 
-   setTimeout(() => {
-  setIsLoading(false);
-  setLoginSuccess(true);
+    // ✅ store token
+    localStorage.setItem("token", res.access);
 
-  // ✅ mark user logged in
-  localStorage.setItem("adminAuth", "true");
+    setLoginSuccess(true);
 
-  setTimeout(() => {
-    navigate("/dashboard");
-  }, 800);
-}, 1200);
-  };
+    setTimeout(() => {
+      navigate("/dashboard");
+    }, 800);
 
+  } catch (err) {
+    console.error("LOGIN ERROR:", err);
+
+    setErrors({
+      general: "Invalid email or password"
+    });
+  }
+};
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -199,14 +204,14 @@ const AdminLogin = () => {
             {/* Submit */}
             <button
               type="submit"
-              disabled={isLoading}
+            disabled={apiLoading}
               className={`w-full py-3.5 rounded-xl font-medium flex items-center justify-center gap-2 ${
-                isLoading
+                apiLoading
                   ? "bg-gray-400 text-white"
                   : "bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-700 text-white"
               }`}
             >
-              {isLoading ? (
+              {apiLoading ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
                   Signing in...
