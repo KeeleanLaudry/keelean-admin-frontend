@@ -23,7 +23,7 @@ const Pagination = ({
   }
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between px-4 py-3 border-t">
+    <div className="flex flex-col md:flex-row items-center justify-between px-4 py-3 ">
       <div className="text-sm text-gray-700 mb-4 md:mb-0">
         Showing {(currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, totalItems)} of {totalItems} entries
       </div>

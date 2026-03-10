@@ -8,7 +8,7 @@ const DataTable = ({
   error,
   onRowClick,
   onEdit,
-  tableClassName="table-fixed" ,  
+  tableClassName="table-auto" ,  
   onDelete,
   onView,
   selectedRows = [],
@@ -67,7 +67,7 @@ const DataTable = ({
               </th>
             ))}
             
-            {actionMenu && <th className="py-2 px-4 text-right w-32">Actions</th>}
+            {actionMenu && <th className="py-2 px-4 text-right w-32 text-sm text-gray-700 font-semibold">Actions</th>}
           </tr>
         </thead>
         

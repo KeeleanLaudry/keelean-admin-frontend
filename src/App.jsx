@@ -5,6 +5,8 @@ import ResetPassword from "./Login/ResetPassword";
 import Services from "./Services/Services";
 import AdminLayout from "./MainLayout";
 import Dashboard from "./Dashboard/Dashboard";
+import Vendor from "./Vendor/vendor"
+import Clothesdata from "./clothes-data/clothes-data"
 function App() {
   
   return (
@@ -19,7 +21,10 @@ function App() {
         {/* Protected + Sidebar Layout */}
           <Route element={<AdminLayout />}>
           <Route path="/dashboard" element={<Dashboard/>} />
+          <Route path="/clothes-data" element={<Clothesdata />} />
             <Route path="/Services" element={<Services />} />
+            <Route path="/Vendor" element={<Vendor />} />
+
           </Route>
 
       </Routes>

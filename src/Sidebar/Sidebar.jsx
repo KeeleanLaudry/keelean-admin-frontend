@@ -12,12 +12,17 @@ import {
   MdClose,
 } from "react-icons/md";
 import logo from "../assets/Logo.png";
-
+import { Settings,  UserCog } from "lucide-react";
+import { FaTshirt } from "react-icons/fa";
 const MENU = [
   { id: "dashboard", label: "Dashboard", icon: MdDashboard, path: "/dashboard" },
+    { id: "Cloth data", label: "Cloth data", icon: FaTshirt, path: "/clothes-data" },
   { id: "Services", label: "Services", icon: MdShoppingBag, path: "/Services" },
   { id: "Items", label: "Items", icon: MdInventory, path: "/Items" },
   { id: "Attributes", label: "Attributes", icon: MdPeople, path: "/Attributes" },
+    { id: "Vendor", label: "Vendor", icon: UserCog , path: "/Vendor" },
+        { id: "Settings", label: "settings", icon: Settings , path: "/settings" },
+
 ];
 
 export default function Sidebar() {

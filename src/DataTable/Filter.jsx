@@ -50,7 +50,7 @@ const Filters = ({
               placeholder={searchPlaceholder}
               value={searchQuery}
               onChange={handleSearch}
-              className="pl-9 pr-4 py-2 border rounded-lg w-full md:w-64
+              className="pl-9 pr-4 py-2 border rounded-lg w-full md:w-96
                          focus:outline-none focus:ring-2 focus:ring-gray-300"
             />
           </div>
