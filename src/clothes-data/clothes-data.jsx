@@ -21,47 +21,8 @@ export default function Clothesdata() {
   const [selectedService, setSelectedService] = useState("");
   const [isAddPopupOpen, setIsAddPopupOpen] = useState(false);
   const [serviceImage, setServiceImage] = useState(null);
-  // const [catalog, setCatalog] = useState({
-  //   services: [
-  //     {
-  //       id: 1,
-  //       name: "Dry Cleaning",
-  //       image:
-  //         "https://i.pinimg.com/736x/4d/83/61/4d8361d319543e2bf127382ddf3a4005.jpg",
-  //       status: true,
-  //     },
-  //     {
-  //       id: 2,
-  //       name: "Wash & Fold",
-  //       image:
-  //         "https://i.pinimg.com/736x/f7/7f/30/f77f3050db14a5d7effe7c049b08f05e.jpg",
-  //       status: true,
-  //     },
-  //     {
-  //       id: 3,
-  //       name: "Ironing",
-  //       image:
-  //         "https://i.pinimg.com/736x/1d/ec/c3/1decc3508579b6d5778c14217987473f.jpg",
-  //       status: false,
-  //     },
-  //   ],
-  //   items: [
-  //     { id: 1, name: "Abaya", serviceId: 1, status: true },
-  //     { id: 2, name: "Shirt", serviceId: 2, status: true },
-  //     { id: 3, name: "Suit", serviceId: 1, status: false },
-  //   ],
-  //   attributes: [
-  //     { id: 1, name: "Fabric", itemId: 1, status: true },
-  //     { id: 2, name: "Gender", itemId: 2, status: true },
-  //     { id: 3, name: "Weight Range", itemId: 1, status: false },
-  //   ],
-  //   attributeOptions: [
-  //     { id: 1, name: "Silk", attributeId: 1, status: true },
-  //     { id: 2, name: "Cotton", attributeId: 1, status: true },
-  //     { id: 3, name: "Men", attributeId: 2, status: true },
-  //     { id: 4, name: "Women", attributeId: 2, status: false },
-  //   ],
-  // });
+  const [selectedItem, setSelectedItem] = useState("");
+ 
   const { data: services = [] } = useGetServicesQuery();
   const { data: items = [] } = useGetItemsQuery();
   const { data: attributes = [] } = useGetAttributeTypesQuery();
@@ -119,29 +80,28 @@ export default function Clothesdata() {
         });
       }
 
-      if (activeTab === "items") {
-        if (!selectedService) {
-          alert("Select service");
-          return;
-        }
+    if (activeTab === "items") {
+  if (!newEntry.trim()) {
+    alert("Enter name");
+    return;
+  }
 
-        await createItem({
-          name: newEntry,
-          services: [selectedService],
-        });
-      }
-
+  await createItem({
+    name: newEntry,
+    services: [selectedService],
+  });
+}
       if (activeTab === "attributes") {
-        if (!selectedService) {
-          alert("Select item type");
-          return;
-        }
+  if (!selectedItem) {
+    alert("Select item type");
+    return;
+  }
 
-        await createAttributeType({
-          name: newEntry,
-          applicable_items: [selectedService],
-        });
-      }
+  await createAttributeType({
+    name: newEntry,
+    applicable_items: [selectedItem],
+  });
+}
 
       if (activeTab === "attributeOptions") {
         if (!selectedAttribute) {
@@ -159,6 +119,7 @@ export default function Clothesdata() {
       setNewEntry("");
       setSelectedAttribute("");
       setSelectedService("");
+      setSelectedItem("");
     } catch (error) {
       console.error(error);
     }
@@ -168,6 +129,7 @@ export default function Clothesdata() {
     setNewEntry("");
     setSelectedAttribute("");
     setSelectedService("");
+    setSelectedItem("");
   };
 
   const getColumns = () => {
@@ -219,21 +181,20 @@ export default function Clothesdata() {
       });
     }
 
-    if (activeTab === "attributes") {
-      baseColumns.push({
-        key: "applicable_items",
-        title: "Item Type",
-        render: (value) => {
-          const item = items.find((i) => i.id === value?.[0]);
-          return (
-            <span className="px-2 py-1 text-gray-700 font-semibold rounded-md text-sm">
-              {item ? item.name : "N/A"}
-            </span>
-          );
-        },
-      });
-    }
-
+ if (activeTab === "attributes") {
+  baseColumns.push({
+    key: "applicable_items",
+    title: "Item Type",
+    render: (value) => {
+      const item = items.find((i) => i.id === value?.[0]);
+      return (
+        <span className="px-2 py-1 text-gray-700 font-semibold rounded-md text-sm">
+          {item ? item.name : "N/A"}
+        </span>
+      );
+    },
+  });
+}
     if (activeTab === "attributeOptions") {
       baseColumns.push({
         key: "attribute_type",
@@ -354,7 +315,7 @@ export default function Clothesdata() {
                 />
               </div>
             )}
-            {activeTab === "items" && (
+            {/* {activeTab === "items" && (
               <select
                 value={selectedService}
                 onChange={(e) => setSelectedService(e.target.value)}
@@ -367,29 +328,21 @@ export default function Clothesdata() {
                   </option>
                 ))}
               </select>
-            )}
-            {activeTab === "attributes" && (
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Select Item Type
-                </label>
-
-                <select
-                  value={selectedService}
-                  onChange={(e) => setSelectedService(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                >
-                  <option value="">Choose Item Type</option>
-
-                  {items.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-
+            )} */}
+     {activeTab === "attributes" && (
+  <select
+    value={selectedItem}
+    onChange={(e) => setSelectedItem(e.target.value)}
+    className="px-4 py-2 border border-gray-300 rounded-lg"
+  >
+    <option value="">Select Item</option>
+    {items.map((item) => (
+      <option key={item.id} value={item.id}>
+        {item.name}
+      </option>
+    ))}
+  </select>
+)}
             {activeTab === "attributeOptions" && (
               <select
                 value={selectedAttribute}
@@ -471,19 +424,27 @@ export default function Clothesdata() {
                 )}
               </div>
             )}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Name
-              </label>
-              <input
-                type="text"
-                value={newEntry}
-                onChange={(e) => setNewEntry(e.target.value)}
-                placeholder="Enter name"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
-              />
-            </div>
-            {activeTab === "attributeOptions" && (
+            {activeTab === "attributes" && (
+  <div className="mb-4">
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      Select Item Type <span className="text-red-500">*</span>
+    </label>
+
+    <select
+      value={selectedItem}
+      onChange={(e) => setSelectedItem(e.target.value)}
+      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+    >
+      <option value="">Choose Item Type</option>
+      {items.map((item) => (
+        <option key={item.id} value={item.id}>
+          {item.name}
+        </option>
+      ))}
+    </select>
+  </div>
+)}
+ {activeTab === "attributeOptions" && (
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Select Attribute <span className="text-red-500">*</span>
@@ -502,6 +463,20 @@ export default function Clothesdata() {
                 </select>
               </div>
             )}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Name
+              </label>
+              <input
+                type="text"
+                value={newEntry}
+                onChange={(e) => setNewEntry(e.target.value)}
+                placeholder="Enter name"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+              />
+            </div>
+           
+
 
             <div className="flex justify-end gap-3 mt-6">
               <button
