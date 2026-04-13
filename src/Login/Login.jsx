@@ -22,7 +22,7 @@ const AdminLogin = () => {
   const [loginSuccess, setLoginSuccess] = useState(false);
 
   const navigate = useNavigate();
-const [adminLogin, { isLoading: apiLoading }] = useAdminLoginMutation();
+  const [adminLogin, { isLoading: apiLoading }] = useAdminLoginMutation();
   const validateForm = () => {
     const newErrors = {};
 
@@ -38,32 +38,31 @@ const [adminLogin, { isLoading: apiLoading }] = useAdminLoginMutation();
     return Object.keys(newErrors).length === 0;
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setErrors({});
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrors({});
 
-  if (!validateForm()) return;
+    if (!validateForm()) return;
 
-  try {
-    const res = await adminLogin(formData).unwrap();
+    try {
+      const res = await adminLogin(formData).unwrap();
 
-    // ✅ store token
-    localStorage.setItem("token", res.access);
+      // ✅ store token
+      localStorage.setItem("token", res.access);
 
-    setLoginSuccess(true);
+      setLoginSuccess(true);
 
-    setTimeout(() => {
-      navigate("/dashboard");
-    }, 800);
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 800);
+    } catch (err) {
+      console.error("LOGIN ERROR:", err);
 
-  } catch (err) {
-    console.error("LOGIN ERROR:", err);
-
-    setErrors({
-      general: "Invalid email or password"
-    });
-  }
-};
+      setErrors({
+        general: "Invalid email or password",
+      });
+    }
+  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -77,7 +76,6 @@ const handleSubmit = async (e) => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
       <div className="relative w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
-          
           {/* Header */}
           <div className="text-center mb-8">
             <h2 className="text-3xl font-semibold text-gray-700 uppercase">
@@ -109,8 +107,8 @@ const handleSubmit = async (e) => {
                     errors.email
                       ? "text-red-500"
                       : formData.email
-                      ? "text-gray-700"
-                      : "text-gray-400"
+                        ? "text-gray-700"
+                        : "text-gray-400"
                   }`}
                 />
                 <input
@@ -162,8 +160,8 @@ const handleSubmit = async (e) => {
                     errors.password
                       ? "text-red-500"
                       : formData.password
-                      ? "text-gray-700"
-                      : "text-gray-400"
+                        ? "text-gray-700"
+                        : "text-gray-400"
                   }`}
                 />
                 <input
@@ -204,7 +202,7 @@ const handleSubmit = async (e) => {
             {/* Submit */}
             <button
               type="submit"
-            disabled={apiLoading}
+              disabled={apiLoading}
               className={`w-full py-3.5 rounded-xl font-medium flex items-center justify-center gap-2 ${
                 apiLoading
                   ? "bg-gray-400 text-white"
